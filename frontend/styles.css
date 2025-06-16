@@ -1,0 +1,337 @@
+/* ========= Global ========= */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #F4E9CE;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px;
+    box-sizing: border-box;
+}
+
+/* ========= Logo e Títulos ========= */
+.logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 120px;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* ========= Inputs, Select, Textarea ========= */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ========= Botões ========= */
+.btn-primary,
+.btn-secondary {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: #fff;
+    display: block;
+    margin: 0 auto 15px; /* centraliza “Nova Auditoria” */
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* ========= Filtro (Etapa 0) ========= */
+.filter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.filter input[type="date"] {
+    width: 150px;
+}
+
+/* ========= Tabela de Auditorias ========= */
+.table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 15px;
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto 15px;
+    min-width: 600px; /* garante largura mínima para colunas */
+}
+
+.audit-table th,
+.audit-table td {
+    border: 1px solid #eee;
+    padding: 8px 12px;
+}
+
+.audit-table th {
+    background: #F0F0F0;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+}
+
+.audit-table td {
+    text-align: left;
+}
+
+.audit-table th:nth-child(4),
+.audit-table td:nth-child(4) {
+    text-align: center;
+}
+
+.action-cell {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.no-data {
+    margin-top: 15px;
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+
+/* ========= Etapa 1: Nova Auditoria (Checklist) ========= */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.checklist-item {
+    margin-bottom: 20px;
+}
+
+.checklist-item .item-cat {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #E64114;
+    margin-bottom: 4px;
+}
+
+.checklist-item .item-desc {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    color: #8D8D8D;
+    margin: 0 0 8px;
+}
+
+.checklist-item .item-body {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* ========= Etapa 2: Conformidades & Ações ========= */
+.dynamic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dynamic-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.dynamic-item input[type="text"],
+.dynamic-item input[type="date"] {
+    flex: 1;
+}
+
+/* --------- Não Conformidades / Conformidades em Aberto --------- */
+.previous-confs {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: #fafafa;
+}
+
+.prev-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.prev-desc {
+    flex: 2 1 200px;
+    word-break: break-word;
+}
+
+.prev-date {
+    flex: 1 1 120px;
+}
+
+.prev-checkbox {
+    flex: 0 0 auto;
+}
+
+/* ========= Dashboard Gerencial ========= */
+.dashboard-section {
+    margin-top: 30px;
+}
+
+.dashboard-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* ========= Ícones (Editar / Excluir) ========= */
+.btn-icon {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon svg {
+    display: block;
+}
+
+/* ========= Responsividade (telas pequenas) ========= */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+    }
+    .btn-primary, .btn-secondary {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+    .filter {
+        flex-direction: column;
+        align-items: center;
+    }
+    .filter input[type="date"] {
+        width: 100%;
+        max-width: 250px;
+    }
+    .dashboard-card {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        align-items: flex-start;
+    }
+    .container {
+        padding: 15px 20px;
+    }
+    h1 {
+        font-size: 20px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    .btn-primary, .btn-secondary {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    .audit-table th,
+    .audit-table td {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    .logo {
+        width: 100px;
+        margin-bottom: 15px;
+    }
+    .prev-desc, .prev-date {
+        font-size: 12px;
+    }
+    .checklist-item .item-cat {
+        font-size: 14px;
+    }
+    .checklist-item .item-desc {
+        font-size: 11px;
+    }
+    /* Ajustes para inputs/textarea */
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+        font-size: 13px;
+        padding: 6px 8px;
+    }
+}

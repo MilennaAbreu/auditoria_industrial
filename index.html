@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html ng-app="auditoriaApp">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auditoria Industrial</title>
+
+    <!-- Favicon na guia -->
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+
+    <!-- Fonte Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
+
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="frontend/styles.css" />
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- App JS -->
+    <script src="frontend/app.js"></script>
+</head>
+<body ng-controller="HomeController as vm">
+<!-- ========== LOGIN CENTRALIZADO ========== -->
+<div class="container login-container" ng-show="!vm.authenticated"
+     style="max-width: 400px; margin: 100px auto 0; text-align: center;">
+    <h2>Digite a senha</h2>
+    <input type="password"
+           ng-model="vm.password"
+           placeholder="Senha"
+           style="
+                   width: 100%;
+                   padding: 8px 12px;
+                   border: 1px solid #ccc;
+                   border-radius: 8px;
+                   box-sizing: border-box;
+                   margin-bottom: 15px;
+                   font-family: 'Poppins', sans-serif;
+                   font-size: 14px;
+               " />
+    <button class="btn-primary" ng-click="vm.login()" style="width: 100%; margin-bottom: 10px;">
+        Entrar
+    </button>
+    <p ng-show="vm.loginError" style="color:red; margin-top:8px;">
+        Senha incorreta. Tente novamente.
+    </p>
+</div>
+<!-- ========== FIM LOGIN ========== -->
+
+<!-- ========== CONTEÚDO PROTEGIDO POR LOGIN ========== -->
+<div ng-show="vm.authenticated">
+    <div class="container">
+
+        <!-- Logo -->
+        <img src="logo.png" class="logo" alt="Logomarca" />
+
+        <!-- Título -->
+        <h1>Auditoria Industrial</h1>
+
+        <!-- ========== ETAPA 0: LISTA INICIAL ========== -->
+        <div ng-show="vm.step === 0">
+
+            <!-- Botão Nova Auditoria centralizado -->
+            <button class="btn-primary" ng-click="vm.new()">Nova Auditoria</button>
+
+            <!-- Filtro de datas -->
+            <div class="filter">
+                <input type="date" ng-model="vm.startDate" />
+                <input type="date" ng-model="vm.endDate" />
+                <button class="btn-secondary" ng-click="vm.load()">Filtrar</button>
+            </div>
+
+            <!-- Tabela de auditorias (wrapper para overflow-x em mobile) -->
+            <div class="table-wrapper">
+                <table class="audit-table" ng-show="vm.auditorias.length">
+                    <thead>
+                    <tr>
+                        <th>Ações</th>
+                        <th>Data</th>
+                        <th>Setor</th>
+                        <th>Gestor</th>
+                        <th>Nota (%)</th>
+                        <th>Observações</th>
+                        <th>PDF</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="aud in vm.auditorias">
+                        <td class="action-cell">
+                            <!-- Ícone de lápis (Editar)
+                            <button class="btn-icon" ng-click="vm.edit(aud)" title="Editar">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#18009F"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.41 1.41l10.34-10.34
+                                             1.34 1.34-10.34 10.34H5.41zm12.83-12.83l1.34-1.34a1 1 0 0 0
+                                             0-1.42l-2.34-2.34a1 1 0 0 0-1.42 0l-1.34 1.34 3.75 3.75z"/>
+                                </svg>
+                            </button> -->
+                            <!-- Ícone de lixo (Excluir)
+                            <button class="btn-icon" ng-click="vm.delete(aud)" title="Excluir">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0000"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9zm2
+                                             4h2v11h-2V7zm4 0h2v11h-2V7zm-6 0h2v11H9V7zm3-4h2v2h-2V3z"/>
+                                </svg>
+                            </button>-->
+                        </td>
+                        <td>{{aud.data_auditoria | date:'dd/MM/yyyy'}}</td>
+                        <td>{{aud.setor_nome}}</td>
+                        <td>{{aud.nome_gestor}}</td>
+                        <td>{{ (aud.nota / 5 * 100) | number:0 }}%</td>
+                        <td>{{aud.observacoes || '—'}}</td>
+                        <td>
+                            <!-- Botão PDF -->
+                            <button class="btn-icon" ng-click="vm.openPDF(aud)" title="PDF">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E64114"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 0H3C1.895 0 1 .895 1 2v20c0 1.105.895 2 2
+                                                 2h18c1.105 0 2-.895 2-2V7l-7-7zM12 2l6 6h-4c-1.103 0-2-.897-2-2V2zm1
+                                                 18h-2v-6h2v6zm6-6h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2zm-7-6h-2v-2h2v2z"/>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-data" ng-if="!vm.auditorias.length">
+                Nenhuma auditoria no período.
+            </div>
+
+            <!-- ======== DASHBOARD ======== -->
+            <div class="dashboard-section" ng-if="vm.auditorias.length">
+                <h2>Dashboard Gerencial</h2>
+                <div class="dashboard-row">
+                    <!-- Card 1: Setores com Mais Conformidades Pendentes -->
+                    <div class="dashboard-card">
+                        <h3>Conformidades Pendentes por Setor</h3>
+                        <canvas id="pendentesChart"></canvas>
+                    </div>
+                    <!-- Card 2: Média de Nota (%) por Setor -->
+                    <div class="dashboard-card">
+                        <h3>Média de Nota (%) por Setor</h3>
+                        <canvas id="notaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- ======== FIM DO DASHBOARD ======== -->
+
+        </div>
+
+        <!-- ========== ETAPA 1: NOVA/EDITAR AUDITORIA ========== -->
+        <div ng-show="vm.step === 1">
+            <h2>{{ vm.editingId ? 'Editar Auditoria' : 'Nova Auditoria' }}</h2>
+            <form ng-submit="vm.nextStep()">
+                <div class="form-group">
+                    <label>Gestor:</label>
+                    <input type="text" ng-model="vm.form.nome_gestor" required />
+                </div>
+                <div class="form-group">
+                    <label>Setor:</label>
+                    <select ng-model="vm.form.setor_id"
+                            ng-options="s.id as s.nome for s in vm.setores"
+                            required>
+                        <option value="">-- Selecione --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data:</label>
+                    <input type="date" ng-model="vm.form.data_auditoria" required />
+                </div>
+
+                <!-- Checklist -->
+                <div class="checklist-item" ng-repeat="item in vm.form.checklist">
+                    <div class="item-cat">{{item.categoria}}</div>
+                    <div class="item-desc">{{item.descricao}}</div>
+                    <div class="item-body">
+                        <select ng-model="item.__rating" required>
+                            <option value="">-- Selecionar --</option>
+                            <option ng-repeat="opt in vm.ratingOptions" ng-value="opt.value">
+                                {{opt.label}}
+                            </option>
+                        </select>
+                        <input type="text"
+                               ng-model="item.__observacao"
+                               placeholder="Observação">
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" type="button" ng-click="vm.cancel()">Cancelar</button>
+                    <button class="btn-primary" type="submit">Próximo</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ========== ETAPA 2: CONFORMIDADES IDENTIFICADAS ========== -->
+        <div ng-show="vm.step === 2">
+            <h2>Conformidades Identificadas</h2>
+            <form ng-submit="vm.save()">
+
+                <!-- ------ Campo: Conformidades Anteriores (Vencidas) ------ -->
+                <div class="form-group">
+                    <label>Conformidades Anteriores (Não Resolvidas e Em Atraso):</label>
+                    <div class="previous-confs" ng-if="vm.confsEmAtraso.length">
+                        <div class="prev-item" ng-repeat="c in vm.confsEmAtraso">
+                            <span class="prev-desc">{{c.descricao}}</span>
+                            <span class="prev-date">
+                                    Prazo: {{c.prazo_correcao | date:'dd/MM/yyyy'}}
+                                </span>
+                            <label class="prev-checkbox">
+                                <input type="checkbox"
+                                       ng-model="c.resolvido"
+                                       ng-change="vm.toggleResolve(c)" />
+                                Resolvido?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="no-data" ng-if="!vm.confsEmAtraso.length">
+                        Nenhuma conformidade vencida.
+                    </div>
+                </div>
+
+                <!-- ------ Campo: Conformidades em Aberto (Dentro do Prazo) ------ -->
+                <div class="form-group">
+                    <label>Conformidades em Aberto (Dentro do Prazo):</label>
+                    <div class="previous-confs" ng-if="vm.confsEmAberto.length">
+                        <div class="prev-item" ng-repeat="c in vm.confsEmAberto">
+                            <span class="prev-desc">{{c.descricao}}</span>
+                            <span class="prev-date">
+                                    Prazo: {{c.prazo_correcao | date:'dd/MM/yyyy'}}
+                                </span>
+                            <label class="prev-checkbox">
+                                <input type="checkbox"
+                                       ng-model="c.resolvido"
+                                       ng-change="vm.toggleResolve(c)" />
+                                Resolvido?
+                            </label>
+                        </div>
+                    </div>
+                    <div class="no-data" ng-if="!vm.confsEmAberto.length">
+                        Nenhuma conformidade em aberto dentro do prazo.
+                    </div>
+                </div>
+
+                <!-- ------ Campo: Conformidades Novas ------ -->
+                <div class="form-group">
+                    <label>Conformidades Novas:</label>
+                    <div class="dynamic-list">
+                        <div class="dynamic-item" ng-repeat="(idx, c) in vm.form.conformidades">
+                            <input type="text"
+                                   ng-model="c.descricao"
+                                   placeholder="Descrição"
+                                   required />
+                            <input type="date"
+                                   ng-model="c.prazo_correcao"
+                                   required />
+                            <button class="btn-secondary btn-sm"
+                                    type="button"
+                                    ng-click="vm.removeConformidade(idx)">
+                                &minus;
+                            </button>
+                        </div>
+                        <button class="btn-primary btn-sm"
+                                type="button"
+                                ng-click="vm.addConformidade()">
+                            + Adicionar Conformidade
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ------ Campo: Ações Corretivas Propostas ------ -->
+                <div class="form-group">
+                    <label>Ações Corretivas Propostas:</label>
+                    <div class="dynamic-list">
+                        <div class="dynamic-item" ng-repeat="(idx, a) in vm.form.acoes_corretivas">
+                            <input type="text"
+                                   ng-model="a.descricao"
+                                   placeholder="Descrição"
+                                   required />
+                            <button class="btn-secondary btn-sm"
+                                    type="button"
+                                    ng-click="vm.removeAcao(idx)">
+                                &minus;
+                            </button>
+                        </div>
+                        <button class="btn-primary btn-sm"
+                                type="button"
+                                ng-click="vm.addAcao()">
+                            + Adicionar Ação
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ------ Campo: Observações Gerais ------ -->
+                <div class="form-group">
+                    <label>Observações Gerais:</label>
+                    <textarea ng-model="vm.form.observacoes_gerais"
+                              placeholder="Digite aqui suas observações gerais..."></textarea>
+                </div>
+
+                <!-- Botões -->
+                <div class="buttons">
+                    <button class="btn-secondary" type="button" ng-click="vm.prevStep()">Voltar</button>
+                    <button class="btn-primary" type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<!-- ========== FIM CONTEÚDO PROTEGIDO ========== -->
+</body>
+</html>

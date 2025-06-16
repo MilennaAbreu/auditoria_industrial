@@ -1,0 +1,12 @@
+# Ignore node modules
+***/node_modules
+# Ignore environment files
+**/.env
+# Ignore IDE files
+**/.idea
+# Angular build output
+/frontend/dist
+# Logs
+*.log
+# MacOS files
+.DS_Store
