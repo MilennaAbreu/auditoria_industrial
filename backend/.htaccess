@@ -1,5 +1,5 @@
 <IfModule mod_passenger.c>
   PassengerEnabled on
   PassengerAppRoot /home1/frigoi12/public_html/auditoria/backend
-  PassengerStartupFile src/index.js
+  PassengerStartupFile index.js
 </IfModule>
