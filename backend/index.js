@@ -30,7 +30,8 @@
 
     // Configuração da pool usando variáveis de ambiente
 
-   // const useSSL = process.env.SSL === 'true';
+    // Permite habilitar SSL via variável de ambiente
+    const useSSL = process.env.SSL === 'true';
 
     const pool = new Pool({
         user: process.env.DB_USER,
@@ -38,7 +39,9 @@
         database: process.env.DB_NAME,
         password: process.env.DB_PASS,
         port: parseInt(process.env.DB_PORT, 10),
-        ssl: false // <- FORÇA CONEXÃO SEM SSL
+        // Quando SSL for exigido (por ex. em servidores na nuvem),
+        // aceita certificados sem validação estrita
+        ssl: useSSL ? { rejectUnauthorized: false } : false
     });
 
 
