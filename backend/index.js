@@ -6,13 +6,14 @@
 
     const app = express();
 
-    // Habilita CORS apenas para seus domínios HTTPS
+    // Habilita CORS lendo os domínios permitidos de variáveis de ambiente
+    const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+        .split(',')
+        .map(o => o.trim())
+        .filter(Boolean);
+
     app.use(cors({
         origin: function (origin, callback) {
-            const allowedOrigins = [
-                'https://frigoias.com.br',
-                'https://ap1.frigoias.com.br'
-            ];
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
             } else {

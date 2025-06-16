@@ -34,6 +34,16 @@ npm install
 npm run dev  # ou npm start
 ```
 
+Para liberar o acesso via CORS, crie um arquivo `.env` em `backend` definindo a
+variável `ALLOWED_ORIGINS` com a lista de domínios permitidos. Separe-os por
+vírgulas:
+
+```
+ALLOWED_ORIGINS=https://frigoias.com.br,https://ap1.frigoias.com.br
+```
+
+Inclua o domínio usado no HostGator (`https://ap1.frigoias.com.br`).
+
 ### Frontend
 ```bash
 cd frontend
