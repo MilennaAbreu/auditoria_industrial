@@ -27,6 +27,10 @@ app.options('*', cors());
 
 app.use(express.json());
 
+process.env.PGSSLMODE = 'disable';
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 // Configuração da pool usando variáveis de ambiente
 const pool = new Pool({
     user:     process.env.DB_USER,
@@ -34,9 +38,7 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASS,
     port:     parseInt(process.env.DB_PORT, 10),
-    ssl: {
-        rejectUnauthorized: false,
-    },
+    ssl:      false,
     max:      20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000
