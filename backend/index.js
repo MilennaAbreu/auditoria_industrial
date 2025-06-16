@@ -30,19 +30,31 @@
 
     // Configuração da pool usando variáveis de ambiente
 
-    // Permite habilitar SSL via variável de ambiente
-    const useSSL = process.env.SSL === 'true';
+    // Permite habilitar SSL via variável de ambiente. Quando NODE_ENV
+    // for 'production' e a variável SSL não estiver definida, assume true
+    const envSsl = process.env.SSL;
+    const useSSL = envSsl ? envSsl === 'true' : process.env.NODE_ENV === 'production';
 
-    const pool = new Pool({
-        user: process.env.DB_USER,
-        host: process.env.DB_HOST,
-        database: process.env.DB_NAME,
-        password: process.env.DB_PASS,
-        port: parseInt(process.env.DB_PORT, 10),
+    // Caso a variável DATABASE_URL esteja definida (ex.: serviços de
+    // hospedagem que fornecem a URL completa de conexão), ela será
+    // priorizada. Senão, usa as variáveis individuais
+    const connectionConfig = process.env.DATABASE_URL
+        ? { connectionString: process.env.DATABASE_URL }
+        : {
+            user: process.env.DB_USER,
+            host: process.env.DB_HOST,
+            database: process.env.DB_NAME,
+            password: process.env.DB_PASS,
+            port: parseInt(process.env.DB_PORT, 10)
+        };
+
+    if (useSSL) {
         // Quando SSL for exigido (por ex. em servidores na nuvem),
         // aceita certificados sem validação estrita
-        ssl: useSSL ? { rejectUnauthorized: false } : false
-    });
+        connectionConfig.ssl = { rejectUnauthorized: false };
+    }
+
+    const pool = new Pool(connectionConfig);
 
 
 
