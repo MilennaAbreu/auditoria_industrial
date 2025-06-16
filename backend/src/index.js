@@ -34,11 +34,21 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASS,
     port:     parseInt(process.env.DB_PORT, 10),
-    ssl:      false,
+    ssl: {
+        rejectUnauthorized: false,
+    },
     max:      20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000
 });
+
+pool.connect()
+    .then(() => console.log("✅ Conectado ao banco PostgreSQL com sucesso"))
+    .catch(err => {
+        console.error("❌ Falha ao conectar no banco:", err);
+        process.exit(1); // força o app a parar se falhar
+    });
+
 
 // Rota de health check
 app.get('/health', async (req, res) => {
