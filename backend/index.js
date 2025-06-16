@@ -38,7 +38,7 @@
         database: process.env.DB_NAME,
         password: process.env.DB_PASS,
         port: parseInt(process.env.DB_PORT, 10),
-        ssl: false // <- FORÇA CONEXÃO SEM SSL
+        ssl: false
     });
 
 
