@@ -11,7 +11,8 @@
         origin: function (origin, callback) {
             const allowedOrigins = [
                 'https://frigoias.com.br',
-                'https://ap1.frigoias.com.br'
+                'https://ap1.frigoias.com.br',
+                'https://SRVAP02FG.frigoias.corp'
             ];
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
