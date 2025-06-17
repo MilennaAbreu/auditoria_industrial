@@ -401,7 +401,8 @@
     });
 
     // Inicia o servidor na porta alocada pelo cPanel
-    const PORT = parseInt(process.env.PORT, 10) || 3000;
-    app.listen(PORT, () => {
-        console.log(`Servidor rodando na porta ${PORT}`);
-    });
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+// Escuta em todas as interfaces para acesso pela rede local
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
