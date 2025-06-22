@@ -126,7 +126,7 @@
             }
 
             // 1) Buscar dados gerais da auditoria
-            const urlAud = `http://localhost:3000/api/auditorias/${auditId}`;
+            const urlAud = `http://SRVAP02FG.frigoias.corp:3000/api/auditorias/${auditId}`;
             fetch(urlAud)
                 .then(response => {
                     if (!response.ok) {
@@ -158,7 +158,7 @@
           `;
 
                     // 2) Buscar respostas do checklist (já com categoria e descrição do item)
-                    return fetch(`http://localhost:3000/api/auditorias/${auditId}/responses`)
+                    return fetch(`http://SRVAP02FG.frigoias.corp:3000/api/auditorias/${auditId}/responses`)
                         .then(respRes => {
                             if (!respRes.ok) {
                                 throw new Error(`Status HTTP (checklist) ${respRes.status}`);
@@ -206,7 +206,7 @@
             `;
 
                             // 3) Buscar conformidades desta auditoria
-                            return fetch(`http://localhost:3000/api/auditorias/${auditId}/conformidades`)
+                            return fetch(`http://SRVAP02FG.frigoias.corp:3000/api/auditorias/${auditId}/conformidades`)
                                 .then(respConf => {
                                     if (!respConf.ok) {
                                         throw new Error(`Status HTTP (conformidades) ${respConf.status}`);
@@ -241,7 +241,7 @@
               `;
 
                                     // 4) Buscar ações corretivas desta auditoria
-                                    return fetch(`http://localhost:3000/api/auditorias/${auditId}/acoes-corretivas`)
+                                    return fetch(`http://SRVAP02FG.frigoias.corp:3000/api/auditorias/${auditId}/acoes-corretivas`)
                                         .then(respAcao => {
                                             if (!respAcao.ok) {
                                                 throw new Error(`Status HTTP (ações) ${respAcao.status}`);

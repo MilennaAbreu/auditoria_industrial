@@ -41,4 +41,4 @@ npm install
 npx ng serve
 ```
 
-Abra http://localhost:4200 e a aplicação estará funcionando, consumindo a API em http://localhost:3000/api.
+Abra http://SRVAP02FG.frigoias.corp:4200 e a aplicação estará funcionando, consumindo a API em http://SRVAP02FG.frigoias.corp:3000/api.
