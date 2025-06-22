@@ -10,6 +10,7 @@
     "module": "es2020",
     "moduleResolution": "node",
     "target": "es2015",
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ],
